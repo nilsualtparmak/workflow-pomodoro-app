@@ -47,10 +47,18 @@ const Storage = {
   }
 };
 
+/** Varsayılan pomodoro süreleri (dakika) */
+const DEFAULT_DURATIONS = {
+  work: 25,
+  shortBreak: 5,
+  longBreak: 15
+};
+
 /** Varsayılan uygulama durumu */
 const DEFAULT_STATE = {
   theme: 'light',
   dailyGoal: 8,
+  durations: { ...DEFAULT_DURATIONS },
   tasks: [],
   stats: {
     todayPomodoros: 0,
@@ -74,9 +82,12 @@ const DEFAULT_STATE = {
  */
 function loadAppState() {
   const saved = Storage.get('state', {});
+  const durations = { ...DEFAULT_DURATIONS, ...saved.durations };
+
   return {
     ...DEFAULT_STATE,
     ...saved,
+    durations,
     stats: { ...DEFAULT_STATE.stats, ...saved.stats },
     timer: { ...DEFAULT_STATE.timer, ...saved.timer }
   };

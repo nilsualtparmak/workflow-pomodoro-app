@@ -18,6 +18,7 @@ const App = {
 
     this.setupGreeting();
     this.setupDailyGoal();
+    this.setupTimerDurations();
     this.setupNotifications();
     this.setupKeyboardShortcuts();
 
@@ -59,6 +60,36 @@ const App = {
       saveAppState(this.state);
       this.updateDashboard();
       Stats.render();
+    });
+  },
+
+  setupTimerDurations() {
+    const fields = {
+      work: document.getElementById('duration-work'),
+      shortBreak: document.getElementById('duration-short-break'),
+      longBreak: document.getElementById('duration-long-break')
+    };
+
+    const limits = { work: [1, 180], shortBreak: [1, 60], longBreak: [1, 60] };
+
+    Object.entries(fields).forEach(([key, input]) => {
+      if (!input) return;
+      input.value = this.state.durations[key];
+
+      input.addEventListener('change', () => {
+        const [min, max] = limits[key];
+        const value = Math.max(min, Math.min(max, parseInt(input.value) || min));
+        input.value = value;
+        this.state.durations[key] = value;
+        saveAppState(this.state);
+
+        if (!this.state.timer.isRunning) {
+          Timer.applyDurationSettings();
+          showToast('Süreler güncellendi.', 'success');
+        } else {
+          showToast('Süreler kaydedildi. Çalışan oturum bitince uygulanır.', 'info');
+        }
+      });
     });
   },
 

@@ -2,12 +2,6 @@
  * FocusFlow – Pomodoro Zamanlayıcı
  */
 
-const TIMER_DURATIONS = {
-  work: 25 * 60,
-  shortBreak: 5 * 60,
-  longBreak: 15 * 60
-};
-
 const MODE_LABELS = {
   work: 'Çalışma',
   shortBreak: 'Kısa Mola',
@@ -57,8 +51,13 @@ const Timer = {
     }
   },
 
+  getDurationMinutes(mode) {
+    const durations = App.state?.durations || DEFAULT_DURATIONS;
+    return durations[mode] ?? durations.work ?? 25;
+  },
+
   getDuration(mode) {
-    return TIMER_DURATIONS[mode] || TIMER_DURATIONS.work;
+    return this.getDurationMinutes(mode) * 60;
   },
 
   setMode(mode, resetTime = true) {
@@ -192,7 +191,7 @@ const Timer = {
   recordWorkSession() {
     const stats = App.state.stats;
     stats.todayPomodoros++;
-    stats.todayFocusMinutes += 25;
+    stats.todayFocusMinutes += this.getDurationMinutes('work');
     stats.totalPomodoros++;
     stats.lastActiveDate = getTodayKey();
 
@@ -309,6 +308,18 @@ const Timer = {
     preview.querySelector('.timer-preview__time').textContent = this.formatTime(timer.remaining);
     preview.querySelector('.timer-preview__status').textContent =
       timer.isRunning ? 'Çalışıyor...' : 'Hazır';
+  },
+
+  applyDurationSettings() {
+    const timer = App.state.timer;
+    if (!timer.isRunning) {
+      timer.remaining = this.getDuration(timer.mode);
+      timer.startedAt = null;
+      this.stopInterval();
+    }
+    this.save();
+    this.render();
+    this.onUpdate?.();
   },
 
   save() {

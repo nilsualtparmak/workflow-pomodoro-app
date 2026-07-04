@@ -4,7 +4,7 @@ Pomodoro zamanlayıcı ve görev yöneticisi. Tamamen tarayıcıda çalışır, 
 
 ## Özellikler
 
-- Pomodoro zamanlayıcı (25 / 5 / 15 dk)
+- Pomodoro zamanlayıcı (süreler özelleştirilebilir)
 - Görev yönetimi (ekle, düzenle, sil, sürükle-bırak)
 - Günlük hedef ve istatistikler
 - Açık / koyu tema

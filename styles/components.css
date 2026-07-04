@@ -233,6 +233,33 @@
   color: var(--color-text-secondary);
 }
 
+.setting-item--column {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.timer-settings-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+  margin-top: var(--space-md);
+}
+
+.timer-settings-grid .form-group {
+  margin-bottom: 0;
+}
+
+.timer-settings-grid .input--number {
+  width: 100%;
+}
+
+.setting-item__hint {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-md);
+}
+
 .setting-item__shortcuts {
   display: flex;
   flex-direction: column;
@@ -412,6 +439,10 @@ kbd {
 
 @media (max-width: 768px) {
   .stats-grid--2 {
+    grid-template-columns: 1fr;
+  }
+
+  .timer-settings-grid {
     grid-template-columns: 1fr;
   }
 }

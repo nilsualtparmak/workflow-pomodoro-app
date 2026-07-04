@@ -339,6 +339,27 @@
           </div>
         </header>
         <div class="settings-container">
+          <div class="card glass setting-item setting-item--column">
+            <div class="setting-item__info">
+              <h3 class="setting-item__title">Pomodoro Süreleri</h3>
+              <p class="setting-item__desc">Çalışma ve mola sürelerini dakika olarak özelleştirin.</p>
+            </div>
+            <div class="timer-settings-grid">
+              <div class="form-group">
+                <label for="duration-work">Çalışma (dk)</label>
+                <input type="number" id="duration-work" class="input input--number" min="1" max="180" value="25" aria-label="Çalışma süresi dakika">
+              </div>
+              <div class="form-group">
+                <label for="duration-short-break">Kısa Mola (dk)</label>
+                <input type="number" id="duration-short-break" class="input input--number" min="1" max="60" value="5" aria-label="Kısa mola süresi dakika">
+              </div>
+              <div class="form-group">
+                <label for="duration-long-break">Uzun Mola (dk)</label>
+                <input type="number" id="duration-long-break" class="input input--number" min="1" max="60" value="15" aria-label="Uzun mola süresi dakika">
+              </div>
+            </div>
+            <p class="setting-item__hint">Örnek: 60 dk çalışma, 10 dk mola. Zamanlayıcı duruyorken uygulanır.</p>
+          </div>
           <div class="card glass setting-item">
             <div class="setting-item__info">
               <h3 class="setting-item__title">Günlük Pomodoro Hedefi</h3>
