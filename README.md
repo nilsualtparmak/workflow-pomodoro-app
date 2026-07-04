@@ -10,9 +10,6 @@ Pomodoro zamanlayıcı ve görev yöneticisi. Tamamen tarayıcıda çalışır, 
 - Açık / koyu tema
 - Bildirimler ve ses
 
-## Kullanım
-
-`index.html` dosyasını tarayıcıda açman yeterli.
 
 ## Klavye Kısayolları
 
