@@ -1,0 +1,321 @@
+/* ============================================
+   FocusFlow – Layout & Responsive
+   ============================================ */
+
+.app {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  grid-template-rows: 1fr;
+  min-height: 100dvh;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Kenar Çubuğu ---- */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-right: 1px solid var(--color-border);
+  padding: var(--space-lg);
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.sidebar__header {
+  margin-bottom: var(--space-xl);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.brand-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+.brand-tagline {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* Navigasyon */
+.sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  flex: 1;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: 0.75rem var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+  text-align: left;
+  width: 100%;
+}
+
+.nav-item:hover {
+  background: var(--color-bg-secondary);
+  color: var(--color-text);
+}
+
+.nav-item.active {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 2px 8px var(--color-primary-glow);
+}
+
+.nav-item.active svg {
+  stroke: white;
+}
+
+.sidebar__footer {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ---- Mobil Üst Bar ---- */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--mobile-header-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 var(--space-md);
+  align-items: center;
+  justify-content: space-between;
+  z-index: 200;
+}
+
+.mobile-header__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.mobile-header .brand-name {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+/* ---- Ana İçerik ---- */
+.main-content {
+  padding: var(--space-xl) var(--space-2xl);
+  overflow-y: auto;
+  max-height: 100dvh;
+}
+
+.view-header {
+  margin-bottom: var(--space-xl);
+}
+
+.view-title {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+.view-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-xs);
+}
+
+/* Görünüm geçişleri */
+.view {
+  animation: view-in var(--transition-base) ease;
+}
+
+.view[hidden] {
+  display: none !important;
+}
+
+@keyframes view-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Dashboard Grid ---- */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.dashboard-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.daily-goal-card {
+  margin-bottom: var(--space-xl);
+}
+
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 640px;
+}
+
+/* ---- Alt Navigasyon (Mobil) ---- */
+.bottom-nav {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-height);
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid var(--color-border);
+  padding: 0 var(--space-xs);
+  align-items: center;
+  justify-content: space-around;
+  z-index: 200;
+}
+
+.bottom-nav__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  font-size: 0.625rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  transition: color var(--transition-fast);
+  flex: 1;
+  max-width: 72px;
+}
+
+.bottom-nav__item.active {
+  color: var(--color-primary);
+}
+
+.bottom-nav__item.active svg {
+  stroke: var(--color-primary);
+}
+
+.bottom-nav__item:hover {
+  color: var(--color-text);
+}
+
+/* ============================================
+   Responsive Breakpoints
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr auto;
+  }
+
+  .sidebar {
+    display: none;
+  }
+
+  .mobile-header {
+    display: flex;
+  }
+
+  .bottom-nav {
+    display: flex;
+  }
+
+  .main-content {
+    padding: calc(var(--mobile-header-height) + var(--space-md)) var(--space-md) calc(var(--bottom-nav-height) + var(--space-md));
+    max-height: none;
+    min-height: 100dvh;
+  }
+
+  .view-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+  }
+
+  .dashboard-row {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: var(--space-md);
+  }
+
+  .stat-card__value {
+    font-size: var(--font-size-xl);
+  }
+
+  .stat-card__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bottom-nav__item span {
+    display: none;
+  }
+}

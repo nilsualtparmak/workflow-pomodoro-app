@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FocusFlow – Pomodoro zamanlayıcı ve görev yöneticisi">
+  <meta name="theme-color" content="#6366f1">
+  <title>FocusFlow – Odaklan & Başar</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/layout.css">
+  <link rel="stylesheet" href="styles/timer.css">
+  <link rel="stylesheet" href="styles/tasks.css">
+</head>
+<body>
+  <!-- Yükleme ekranı -->
+  <div id="loading-screen" class="loading-screen" aria-hidden="true">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">FocusFlow yükleniyor...</p>
+  </div>
+
+  <div class="app" id="app" hidden>
+    <!-- Mobil üst bar -->
+    <header class="mobile-header">
+      <div class="mobile-header__brand">
+        <span class="brand-icon" aria-hidden="true">🍅</span>
+        <span class="brand-name">FocusFlow</span>
+      </div>
+      <button
+        class="btn btn--icon btn--ghost theme-toggle"
+        id="theme-toggle-mobile"
+        aria-label="Tema değiştir"
+        title="Tema değiştir"
+      >
+        <svg class="icon icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="icon icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Masaüstü kenar çubuğu -->
+    <aside class="sidebar" aria-label="Ana navigasyon">
+      <div class="sidebar__header">
+        <div class="brand">
+          <span class="brand-icon" aria-hidden="true">🍅</span>
+          <div class="brand-text">
+            <span class="brand-name">FocusFlow</span>
+            <span class="brand-tagline">Odaklan & Başar</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar__nav" role="navigation">
+        <button class="nav-item active" data-view="dashboard" aria-current="page">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7" rx="1"/>
+            <rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/>
+            <rect x="14" y="14" width="7" height="7" rx="1"/>
+          </svg>
+          <span>Panel</span>
+        </button>
+        <button class="nav-item" data-view="timer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span>Zamanlayıcı</span>
+        </button>
+        <button class="nav-item" data-view="tasks">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M9 11l3 3L22 4"/>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+          </svg>
+          <span>Görevler</span>
+        </button>
+        <button class="nav-item" data-view="stats">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          <span>İstatistikler</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+          <span>Ayarlar</span>
+        </button>
+      </nav>
+
+      <div class="sidebar__footer">
+        <blockquote class="quote" id="motivational-quote">
+          <p>"Başarı, küçük çabaların tekrarıdır."</p>
+          <cite>— Robert Collier</cite>
+        </blockquote>
+        <button
+          class="btn btn--ghost btn--full theme-toggle"
+          id="theme-toggle"
+          aria-label="Tema değiştir"
+        >
+          <svg class="icon icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+          <svg class="icon icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          <span class="theme-label">Koyu Mod</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Ana içerik -->
+    <main class="main-content" id="main-content">
+      <!-- Panel Görünümü -->
+      <section class="view view--active" id="view-dashboard" aria-label="Panel">
+        <header class="view-header">
+          <div>
+            <h1 class="view-title">Panel</h1>
+            <p class="view-subtitle" id="dashboard-greeting">Günaydın! Bugün harika bir gün.</p>
+          </div>
+        </header>
+        <div class="dashboard-grid">
+          <div class="stat-card glass">
+            <div class="stat-card__icon stat-card__icon--focus">⏱️</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Bugünkü Odak Süresi</span>
+              <span class="stat-card__value" id="dash-focus-time">0 dk</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-card__icon stat-card__icon--pomodoro">🍅</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Tamamlanan Pomodoro</span>
+              <span class="stat-card__value" id="dash-pomodoros">0</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-card__icon stat-card__icon--goal">🎯</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Kalan Hedef</span>
+              <span class="stat-card__value" id="dash-remaining-goal">8</span>
+            </div>
+          </div>
+          <div class="stat-card glass">
+            <div class="stat-card__icon stat-card__icon--tasks">✅</div>
+            <div class="stat-card__content">
+              <span class="stat-card__label">Tamamlanan Görevler</span>
+              <span class="stat-card__value" id="dash-completed-tasks">0</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-row">
+          <div class="card glass dashboard-timer-preview">
+            <h2 class="card__title">Aktif Zamanlayıcı</h2>
+            <div class="timer-preview" id="dashboard-timer-preview">
+              <div class="timer-preview__mode">Çalışma</div>
+              <div class="timer-preview__time">25:00</div>
+              <div class="timer-preview__status">Hazır</div>
+            </div>
+          </div>
+          <div class="card glass dashboard-next-task">
+            <h2 class="card__title">Sıradaki Görev</h2>
+            <div class="empty-state" id="dashboard-next-task">
+              <span class="empty-state__icon">📋</span>
+              <p>Henüz görev yok. İlk görevinizi ekleyin!</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass daily-goal-card">
+          <div class="daily-goal-card__header">
+            <h2 class="card__title">Günlük Hedef</h2>
+            <span class="daily-goal-card__progress-text" id="dash-goal-text">0 / 8 Pomodoro</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-bar__fill" id="dash-goal-progress" style="width: 0%"></div>
+          </div>
+          <span class="daily-goal-card__percent" id="dash-goal-percent">%0</span>
+        </div>
+      </section>
+
+      <!-- Zamanlayıcı Görünümü -->
+      <section class="view" id="view-timer" aria-label="Pomodoro Zamanlayıcı" hidden>
+        <header class="view-header">
+          <div>
+            <h1 class="view-title">Pomodoro Zamanlayıcı</h1>
+            <p class="view-subtitle">Odaklan, mola ver, tekrarla.</p>
+          </div>
+        </header>
+        <div class="timer-container">
+          <div class="timer-modes" role="group" aria-label="Zamanlayıcı modu">
+            <button class="timer-mode-btn active" data-mode="work" aria-pressed="true">Çalışma</button>
+            <button class="timer-mode-btn" data-mode="shortBreak" aria-pressed="false">Kısa Mola</button>
+            <button class="timer-mode-btn" data-mode="longBreak" aria-pressed="false">Uzun Mola</button>
+          </div>
+
+          <div class="timer-ring-wrapper" id="timer-ring-wrapper" data-mode="work">
+            <svg class="timer-ring" viewBox="0 0 280 280" aria-hidden="true">
+              <circle class="timer-ring__bg" cx="140" cy="140" r="130"/>
+              <circle
+                class="timer-ring__progress"
+                id="timer-ring-progress"
+                cx="140" cy="140" r="130"
+                stroke-dasharray="816.814"
+                stroke-dashoffset="0"
+              />
+            </svg>
+            <div class="timer-display">
+              <span class="timer-display__mode" id="timer-mode-label">Çalışma</span>
+              <time class="timer-display__time" id="timer-time" datetime="PT25M">25:00</time>
+              <span class="timer-display__session" id="timer-session-info">Oturum 0 / 4</span>
+            </div>
+          </div>
+
+          <div class="session-dots" id="session-dots" aria-label="Tamamlanan oturumlar"></div>
+
+          <div class="timer-controls">
+            <button class="btn btn--primary btn--lg" id="timer-start-btn" aria-label="Zamanlayıcıyı başlat">Başlat</button>
+            <button class="btn btn--secondary" id="timer-reset-btn" aria-label="Zamanlayıcıyı sıfırla">Sıfırla</button>
+            <button class="btn btn--ghost" id="timer-skip-btn" aria-label="Oturumu atla">Atla</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Görevler Görünümü -->
+      <section class="view" id="view-tasks" aria-label="Görev Yöneticisi" hidden>
+        <header class="view-header">
+          <div>
+            <h1 class="view-title">Görevler</h1>
+            <p class="view-subtitle">Görevlerinizi organize edin ve takip edin.</p>
+          </div>
+        </header>
+        <div class="tasks-container">
+          <div class="tasks-header">
+            <div class="tasks-filters" role="group" aria-label="Görev filtresi">
+              <button class="filter-btn active" data-filter="all">Tümü</button>
+              <button class="filter-btn" data-filter="active">Aktif</button>
+              <button class="filter-btn" data-filter="completed">Tamamlanan</button>
+            </div>
+            <button class="btn btn--primary" id="add-task-btn" aria-label="Yeni görev ekle">
+              + Yeni Görev
+            </button>
+          </div>
+
+          <ul class="task-list" id="task-list" role="list" aria-label="Görev listesi"></ul>
+
+          <div class="empty-state" id="tasks-empty">
+            <span class="empty-state__icon">📝</span>
+            <p>Henüz görev yok. İlk görevinizi ekleyerek başlayın!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- İstatistikler Görünümü -->
+      <section class="view" id="view-stats" aria-label="İstatistikler" hidden>
+        <header class="view-header">
+          <div>
+            <h1 class="view-title">İstatistikler</h1>
+            <p class="view-subtitle">Üretkenliğinizi takip edin.</p>
+          </div>
+        </header>
+        <div class="stats-container">
+          <div class="dashboard-grid stats-grid">
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--pomodoro">🍅</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Bugünkü Pomodoro</span>
+                <span class="stat-card__value" id="stat-today-pomodoros">0</span>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--focus">⏱️</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Bugünkü Odak Süresi</span>
+                <span class="stat-card__value" id="stat-focus-time">0 dk</span>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--tasks">✅</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Bugün Tamamlanan Görev</span>
+                <span class="stat-card__value" id="stat-completed-tasks">0</span>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--goal">🔥</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Mevcut Seri</span>
+                <span class="stat-card__value" id="stat-streak">0 gün</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid stats-grid stats-grid--2">
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--pomodoro">📊</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Toplam Pomodoro</span>
+                <span class="stat-card__value" id="stat-total-pomodoros">0</span>
+              </div>
+            </div>
+            <div class="stat-card glass">
+              <div class="stat-card__icon stat-card__icon--goal">🎯</div>
+              <div class="stat-card__content">
+                <span class="stat-card__label">Kalan Hedef</span>
+                <span class="stat-card__value" id="stat-remaining-goal">8</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card glass daily-goal-card" id="stats-goal-card">
+            <div class="daily-goal-card__header">
+              <h2 class="card__title">Günlük Hedef İlerlemesi</h2>
+              <span class="daily-goal-card__progress-text" id="stat-goal-text">0 / 8 Pomodoro</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-bar__fill" id="stat-goal-bar" style="width: 0%"></div>
+            </div>
+            <span class="daily-goal-card__percent" id="stat-goal-percent">%0</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ayarlar Görünümü -->
+      <section class="view" id="view-settings" aria-label="Ayarlar" hidden>
+        <header class="view-header">
+          <div>
+            <h1 class="view-title">Ayarlar</h1>
+            <p class="view-subtitle">Uygulamayı kişiselleştirin.</p>
+          </div>
+        </header>
+        <div class="settings-container">
+          <div class="card glass setting-item">
+            <div class="setting-item__info">
+              <h3 class="setting-item__title">Günlük Pomodoro Hedefi</h3>
+              <p class="setting-item__desc">Her gün kaç pomodoro tamamlamak istiyorsunuz?</p>
+            </div>
+            <div class="setting-item__control">
+              <input
+                type="number"
+                id="daily-goal-input"
+                class="input input--number"
+                min="1"
+                max="50"
+                value="8"
+                aria-label="Günlük pomodoro hedefi"
+              >
+            </div>
+          </div>
+          <div class="card glass setting-item">
+            <div class="setting-item__info">
+              <h3 class="setting-item__title">Bildirimler</h3>
+              <p class="setting-item__desc">Zamanlayıcı bittiğinde tarayıcı bildirimi al.</p>
+            </div>
+            <div class="setting-item__control">
+              <button class="btn btn--secondary" id="enable-notifications">
+                Bildirimleri Etkinleştir
+              </button>
+            </div>
+          </div>
+          <div class="card glass setting-item">
+            <div class="setting-item__info">
+              <h3 class="setting-item__title">Klavye Kısayolları</h3>
+              <p class="setting-item__desc">Hızlı erişim için kısayollar.</p>
+            </div>
+            <div class="setting-item__shortcuts">
+              <div class="shortcut"><kbd>Boşluk</kbd><span>Başlat / Duraklat</span></div>
+              <div class="shortcut"><kbd>R</kbd><span>Sıfırla</span></div>
+              <div class="shortcut"><kbd>N</kbd><span>Yeni Görev</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Mobil alt navigasyon -->
+    <nav class="bottom-nav" aria-label="Mobil navigasyon">
+      <button class="bottom-nav__item active" data-view="dashboard" aria-current="page">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7" rx="1"/>
+          <rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/>
+          <rect x="14" y="14" width="7" height="7" rx="1"/>
+        </svg>
+        <span>Panel</span>
+      </button>
+      <button class="bottom-nav__item" data-view="timer">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span>Zamanlayıcı</span>
+      </button>
+      <button class="bottom-nav__item" data-view="tasks">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M9 11l3 3L22 4"/>
+          <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+        </svg>
+        <span>Görevler</span>
+      </button>
+      <button class="bottom-nav__item" data-view="stats">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="18" y1="20" x2="18" y2="10"/>
+          <line x1="12" y1="20" x2="12" y2="4"/>
+          <line x1="6" y1="20" x2="6" y2="14"/>
+        </svg>
+        <span>İstatistik</span>
+      </button>
+      <button class="bottom-nav__item" data-view="settings">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v2M12 21v2"/>
+        </svg>
+        <span>Ayarlar</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Oturum tamamlandı popup -->
+  <div class="session-modal" id="session-modal" hidden role="dialog" aria-modal="true" aria-labelledby="session-modal-title">
+    <div class="session-modal__backdrop"></div>
+    <div class="session-modal__content">
+      <div class="session-modal__icon" id="session-modal-icon">🎉</div>
+      <h2 class="session-modal__title" id="session-modal-title">Oturum Tamamlandı!</h2>
+      <p class="session-modal__desc" id="session-modal-desc">Harika iş çıkardın!</p>
+      <button class="btn btn--primary btn--lg" id="session-modal-btn">Devam Et</button>
+    </div>
+  </div>
+
+  <!-- Görev modal -->
+  <div class="modal" id="task-modal" hidden role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+    <div class="modal__backdrop"></div>
+    <div class="modal__dialog">
+      <h2 class="modal__title" id="task-modal-title">Yeni Görev</h2>
+      <form id="task-form">
+        <div class="form-group">
+          <label for="task-title">Görev Başlığı *</label>
+          <input type="text" id="task-title" name="title" class="input" placeholder="Ne üzerinde çalışacaksın?" required maxlength="200">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="task-priority">Öncelik</label>
+            <select id="task-priority" name="priority" class="input">
+              <option value="low">Düşük</option>
+              <option value="medium" selected>Orta</option>
+              <option value="high">Yüksek</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="task-pomodoros">Tahmini Pomodoro</label>
+            <input type="number" id="task-pomodoros" name="pomodoros" class="input" min="1" max="20" value="1">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="task-notes">Notlar</label>
+          <textarea id="task-notes" name="notes" class="input" placeholder="İsteğe bağlı notlar..." maxlength="500"></textarea>
+        </div>
+        <div class="modal__actions">
+          <button type="button" class="btn btn--ghost" id="task-modal-cancel">İptal</button>
+          <button type="submit" class="btn btn--primary">Kaydet</button>
+        </div>
+      </form>
+      <button class="btn btn--icon btn--ghost modal-close-btn" id="task-modal-close" aria-label="Kapat" style="position:absolute;top:1rem;right:1rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Confetti canvas -->
+  <canvas id="confetti-canvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Toast bildirimleri -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/theme.js"></script>
+  <script src="scripts/navigation.js"></script>
+  <script src="scripts/quotes.js"></script>
+  <script src="scripts/notifications.js"></script>
+  <script src="scripts/confetti.js"></script>
+  <script src="scripts/timer.js"></script>
+  <script src="scripts/tasks.js"></script>
+  <script src="scripts/stats.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
